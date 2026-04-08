@@ -1,0 +1,28 @@
+{
+  "name": "crudnodejs",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/FelipeAnversa/CRUDnodejs#readme",
+  "bugs": {
+    "url": "https://github.com/FelipeAnversa/CRUDnodejs/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FelipeAnversa/CRUDnodejs.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "src/app.js",
+  "scripts": {
+    "start:dev": "nodemon src/app.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^6.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
