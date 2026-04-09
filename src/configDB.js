@@ -3,7 +3,7 @@ import { open } from 'sqlite';
 
 export default function openDB() {
     return open({
-        filename: './database.db',
+        filename: './database/database.db',
         driver: sqlite3.Database
     });
 };
