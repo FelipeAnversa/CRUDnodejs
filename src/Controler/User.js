@@ -65,7 +65,7 @@ export async function insertUser(req, res) {
         });
     }
     try {
-        const passwordHash = await bcrypt.hash(password, 10);
+        const passwordHash = await bcrypt.hash(password.toString(), 10);
         const db = await openDB();
         await db.run(
             'INSERT INTO User (login, password) VALUES (?,?)', 
@@ -93,6 +93,51 @@ export async function insertUser(req, res) {
     }
 };
 
+export async function loginUser(req, res) {
+    const { login, password } = req.body;
+    if (!login || !password) {
+        return res.status(400)
+        .json({
+            "statusCode": 400,
+            "message": "Login e senha são obrigatórios"
+        });
+    }
+    try {
+        const db = await openDB();
+        const user = await db.get(
+            'SELECT * FROM User WHERE login = ?', 
+            [login]
+        );
+        if (!user) {
+            return res.status(401)
+            .json({ 
+                "statusCode": 401, 
+                "message": "Usuário ou senha incorretos" 
+            });
+        }
+        const isValid = await bcrypt.compare(password.toString(), user.password);
+        if (!isValid) {
+            return res.status(401)
+            .json({ 
+                "statusCode": 401, 
+                "message": "Usuário ou senha incorretos" 
+            });
+        }
+        res.json({ 
+            "statusCode": 200, 
+            "message": "Login realizado com sucesso!", 
+            "userId": user.id 
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500)
+        .json({ 
+            "statusCode": 500, 
+            "message": "Erro ao realizar login" 
+        });
+    }
+}
+
 export async function updateUser(req, res) {
     const { id, login, password } = req.body;
     if (!id || !login || !password) {
@@ -103,7 +148,7 @@ export async function updateUser(req, res) {
         });
     }
     try {
-        const passwordHash = await bcrypt.hash(password, 10);
+        const passwordHash = await bcrypt.hash(password.toString(), 10);
         const db = await openDB();
         await db.run(
             'UPDATE User SET login=?, password=? WHERE id=?', 
@@ -134,10 +179,17 @@ export async function deleteUser(req, res) {
     }
     try {
         const db = await openDB();
-        await db.run(
+        const result = await db.run(
             'DELETE FROM User WHERE id=?', 
             [id]
         );
+        if (result.changes === 0) {
+            return res.status(404)
+            .json({
+                "statusCode": 404,
+                "message": "Usuário não encontrado"
+            });
+        }
         res.json({ 
             "statusCode": 200, 
             "message": "Conta Deletada com Sucesso" 

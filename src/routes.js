@@ -4,7 +4,8 @@ import {
     selectUsers,
     selectUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    loginUser
 } from "./Controler/User.js";
 
 const router = Router();
@@ -21,5 +22,6 @@ router.get("/user", selectUser);
 router.post("/user", insertUser);
 router.put("/user", updateUser);
 router.delete("/user", deleteUser);
+router.post("/login", loginUser);
 
 export default router;

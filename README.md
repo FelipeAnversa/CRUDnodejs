@@ -1,60 +1,58 @@
-# CRUDnodejs
+# CRUD & Auth API com Node.js
 
-Uma API simples e funcional construída com **Node.js**, **Express** e **SQLite** para realizar operações de CRUD (Create, Read, Update, Delete) em registros de pessoas.
+Uma API robusta construída com **Node.js**, **Express** e **SQLite**. O projeto evoluiu de um CRUD simples para um sistema de gerenciamento de usuários com segurança criptográfica para armazenamento de senhas.
 
-## 🚀 Tecnologias Utilizadas
+## 🚀 Tecnologias e Segurança
 
-  * **Node.js**: Ambiente de execução JavaScript no servidor.
-  * **Express**: Framework web minimalista para Node.js.
-  * **SQLite**: Banco de dados leve e embarcado.
-  * **Nodemon**: Ferramenta de desenvolvimento para reiniciar o servidor automaticamente.
+* **Node.js**: Ambiente de execução JavaScript.
+* **Express**: Framework para rotas e middlewares.
+* **SQLite**: Banco de dados relacional leve.
+* **bcrypt**: Biblioteca para hashing de senhas (segurança contra vazamentos).
+* **Nodemon**: Reinicialização automática do servidor durante o desenvolvimento.
 
 ## 📋 Pré-requisitos
 
-Certifique-se de ter o [Node.js](https://nodejs.org/) instalado em sua máquina.
+* [Node.js](https://nodejs.org/) instalado.
+* Conhecimento básico em ferramentas como Postman ou Insomnia para testes.
 
-## ⚙️ Como Instalar e Executar
+## ⚙️ Instalação e Execução
 
 1.  **Clone o repositório:**
-
     ```bash
     git clone https://github.com/FelipeAnversa/CRUDnodejs.git
     cd CRUDnodejs
     ```
 
 2.  **Instale as dependências:**
-
     ```bash
     npm install
     ```
 
-3.  **Inicie o projeto em modo de desenvolvimento:**
-
+3.  **Inicie o servidor:**
     ```bash
     npm run start:dev
     ```
+    *Servidor disponível em `http://localhost:3000`.*
 
-    *A API estará rodando em `http://localhost:3000`.*
+## 📌 Rotas da API (Endpoints)
 
-## 📌 Rotas da API
+Agora a API foca no recurso `User` e possui lógica de autenticação:
 
-| Método | Rota | Descrição |
-| :--- | :--- | :--- |
-| `GET` | `/` | Verifica se a API está rodando. |
-| `GET` | `/persons` | Lista todas as pessoas cadastradas. |
-| `GET` | `/person` | Busca uma pessoa específica (requer `id` no corpo). |
-| `POST` | `/person` | Adiciona uma nova pessoa. |
-| `PUT` | `/person` | Atualiza os dados de uma pessoa existente. |
-| `DELETE` | `/person` | Remove uma pessoa do banco de dados. |
+| Método | Rota | Descrição | Body (JSON) |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/users` | Lista todos os usuários (IDs e Logins). | N/A |
+| `POST` | `/user` | **Criação de Conta**: Salva senha com hash. | `{ "login": "...", "password": "..." }` |
+| `POST` | `/login` | **Autenticação**: Compara hashes e valida acesso. | `{ "login": "...", "password": "..." }` |
+| `PUT` | `/user` | Atualiza login ou senha de um usuário. | `{ "id": 1, "login": "...", "password": "..." }` |
+| `DELETE` | `/user` | Remove um usuário por ID. | `{ "id": 1 }` |
 
-## 🛠️ Como contribuir
+## 🔒 Destaques de Segurança Implementados
 
-1.  Faça um *fork* do projeto.
-2.  Crie uma nova *branch* (`git checkout -b feature/minha-feature`).
-3.  Faça o *commit* das suas alterações (`git commit -m 'Adicionando minha feature'`).
-4.  Envie para o seu repositório (*push* `git push origin feature/minha-feature`).
-5.  Abra um *Pull Request*.
+* **Hashing de Senhas**: Uso de `bcrypt` com 10 salt rounds. Nunca salvamos senhas em texto puro.
+* **SQL Injection Prevention**: Utilização de *prepared statements* (parâmetros `?`) em todas as queries.
+* **Unique Constraint**: Tratamento de erro para impedir logins duplicados.
+* **Validação de Resposta**: Respostas de login genéricas para evitar enumeração de usuários por atacantes.
 
 ## 📄 Licença
 
-Este projeto está licenciado sob a licença **MIT** - veja o arquivo [LICENSE](https://www.google.com/search?q=LICENSE) para mais detalhes.
+Este projeto está sob a licença **MIT**.
