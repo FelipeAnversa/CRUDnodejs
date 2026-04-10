@@ -1,19 +1,25 @@
 import { Router } from "express";
-import { createTable, insertPessoa, selectPessoas, selectPessoa, updatePessoa, deletePessoa } from './Controler/Person.js';
+import {
+    insertUser,
+    selectUsers,
+    selectUser,
+    updateUser,
+    deleteUser
+} from "./Controler/User.js";
 
 const router = Router();
 
-router.get('/', (req, res) => {
+router.get("/", (req, res) => {
     res.json({
-        "statusCode": 200,
-        "mensage": "Api Rodando"
+        statusCode: 200,
+        message: "Api Rodando",
     });
-})
+});
 
-router.get('/persons', selectPessoas);
-router.get('/person', selectPessoa);
-router.post('/person', insertPessoa);
-router.put('/person', updatePessoa);
-router.delete('/person', deletePessoa);
+router.get("/users", selectUsers);
+router.get("/user", selectUser);
+router.post("/user", insertUser);
+router.put("/user", updateUser);
+router.delete("/user", deleteUser);
 
 export default router;
